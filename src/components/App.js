@@ -1,5 +1,6 @@
 import React from 'react'
 import MovieList from './MovieList'
+import SearchBar from './SearchBar'
 
 
 class App extends React.Component{
@@ -24,17 +25,47 @@ class App extends React.Component{
               id: 3,
               name: "The Dark Knight",
               rating: 9.1,
-              overview: "When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.",
+              overview: "When the Joker creates chaos in Gotham, Batman faces a great test of his abilities to fight injustice, both physically and psychologically.",
               imageURL: "https://m.media-amazon.com/images/I/91KkWf50SoL._AC_UF1000,1000_QL80_.jpg"
             },
             {
                 id: 4,
-                name: "Tenet",
+                name: "Tenet",  
                 rating: 8.5,
-                overview: "When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.",
+                overview: "A former CIA agent manipulates time to prevent a future attack that threatens to destroy the present world.",
                 imageURL: "https://tr.web.img3.acsta.net/pictures/20/08/28/14/59/2855138.jpg"
+              },
+              {
+                id: 5,
+                name: "Nitram",  
+                rating: 7.2,
+                overview: "Nitram is an intellectually disabled young adult who lives with his parents in Port Arthur, Australia. She likes to play tennis. ",
+                imageURL: "https://s3.amazonaws.com/static.rogerebert.com/uploads/movie/movie_poster/nitram-2022/large_nitram-poster.jpeg"
+              },
+              {
+                id: 6,
+                name: "Inception",  
+                rating: 9.6,
+                overview: "A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind.",
+                imageURL: "https://play-lh.googleusercontent.com/kSeBtvMBvS9P9jSwP-bVNmrH8yANJeKZrbxUIiw6zSOpRibxBn1IP7PEHrDeoIz0AmQPddbRPMEgh8KL8ohd"
+              },
+              {
+                id: 7,
+                name: "The Lord of the Rings",  
+                rating: 9.3,
+                overview: "The Lord of the Rings is a fantasy adventure about a hobbit named Frodo and his journey to destroy a powerful ring and defeat evil forces.",
+                imageURL: "https://m.media-amazon.com/images/M/MV5BN2EyZjM3NzUtNWUzMi00MTgxLWI0NTctMzY4M2VlOTdjZWRiXkEyXkFqcGdeQXVyNDUzOTQ5MjY@._V1_.jpg"
+              },
+              {
+                id: 8,
+                name: "Forrest Gump",  
+                rating: 6.3,
+                overview: "The movie follows the life of Forrest Gump, a simple man with a low IQ who unwittingly becomes a part of several important historical events.",
+                imageURL: "https://tr.web.img4.acsta.net/pictures/bzp/01/10568.jpg"
               }
-        ]
+        ], 
+
+        searchQuery: ""
     }
 
     // Delete Movie Function
@@ -42,21 +73,37 @@ class App extends React.Component{
         const newMovieList = this.state.movies.filter(
             m => m.id !== movie.id
         )
-        this.setState({
-            movies: newMovieList
-        })
+        // this.setState({   İlk yöntemde, önceki durumun yerine tamamen yeni bir state nesnesi oluşturuluyor ve bunun ardından setState yöntemi çağrılıyor. Bu yöntem, sadece tek bir state değişikliği yapıldığında kullanılabilir ve önceki durumun kaydedilmesi gerektiğinde ekstra bellek kullanımına neden olabilir. Ayrıca, paralel olarak çalışan birden fazla setState işlevi çağrıldığında, önceki durumların üzerine yazarak kaybolmalarına neden olabilir. Bu nedenle, önceki duruma göre değişiklik yapmak gerektiğinde, ikinci yöntem kullanılmalıdır.
+        //     movies: newMovieList
+        // })
+
+        this.setState(state => ({ /* İlk yöntemde, önceki durumun yerine tamamen yeni bir state nesnesi oluşturuluyor ve bunun ardından setState yöntemi çağrılıyor. Bu yöntem, sadece tek bir state değişikliği yapıldığında kullanılabilir ve önceki durumun kaydedilmesi gerektiğinde ekstra bellek kullanımına neden olabilir. Ayrıca, paralel olarak çalışan birden fazla setState işlevi çağrıldığında, önceki durumların üzerine yazarak kaybolmalarına neden olabilir. Bu nedenle, önceki duruma göre değişiklik yapmak gerektiğinde, ikinci yöntem kullanılmalıdır. */
+            movies:  newMovieList
+        }))
+    }
+
+    searchMovie = (event) => {
+        // console.log(event.target.value); // buradaki event onChange'den geliyor.
+        this.setState({searchQuery: event.target.value})
     }
 
     render(){
+
+        let filteredMovies = this.state.movies.filter(
+            (movie) => {
+                return movie.name.indexOf(this.state.searchQuery) !== -1
+            }
+        )
         return(
             <div className='container'>
                 <div className='row'>
                     <div className='col-lg-12'>
+                        <SearchBar searchMovieProp = {this.searchMovie} />
                     </div>
                 </div>
 
                 <MovieList
-                    movies = {this.state.movies}
+                    movies = {filteredMovies}
                     deleteMovieProp = {this.deleteMovie} />
             </div>
         )
