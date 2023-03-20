@@ -82,7 +82,7 @@ class App extends React.Component{
         }))
     }
 
-    searchMovie = (event) => {
+    searchMovie = (event) => { // buradaki event onChange'den döndürülen event nesnesidir.
         // console.log(event.target.value); // buradaki event onChange'den geliyor.
         this.setState({searchQuery: event.target.value})
     }
@@ -91,14 +91,14 @@ class App extends React.Component{
 
         let filteredMovies = this.state.movies.filter(
             (movie) => {
-                return movie.name.indexOf(this.state.searchQuery) !== -1
+                return movie.name.toLowerCase().indexOf(this.state.searchQuery.toLowerCase()) !== -1
             }
         )
         return(
             <div className='container'>
                 <div className='row'>
                     <div className='col-lg-12'>
-                        <SearchBar searchMovieProp = {this.searchMovie} />
+                        <SearchBar searchMovieProp = {this.searchMovie} /> 
                     </div>
                 </div>
 
