@@ -16,12 +16,14 @@ class App extends React.Component{
       this.setState({movies: response.data})
     }
 
-    // DELETE FUNCTION - AXIOS API
+      // DELETE FUNCTION - AXIOS API
     deleteMovie = async (movie) => { 
+
         axios.delete(`http://localhost:3002/movies/${movie.id}`)
         const newMovieList = this.state.movies.filter(
             m => m.id !== movie.id
         )
+
         this.setState(state => ({ /* İlk yöntemde, önceki durumun yerine tamamen yeni bir state nesnesi oluşturuluyor ve bunun ardından setState yöntemi çağrılıyor. Bu yöntem, sadece tek bir state değişikliği yapıldığında kullanılabilir ve önceki durumun kaydedilmesi gerektiğinde ekstra bellek kullanımına neden olabilir. Ayrıca, paralel olarak çalışan birden fazla setState işlevi çağrıldığında, önceki durumların üzerine yazarak kaybolmalarına neden olabilir. Bu nedenle, önceki duruma göre değişiklik yapmak gerektiğinde, ikinci yöntem kullanılmalıdır. */
             movies:  newMovieList
         }))
