@@ -11,7 +11,7 @@ class App extends React.Component{
     }
 
     async componentDidMount(){
-      const response = await axios("http://localhost:3002/movies") // API işlemleri componentDidMount içinde yapılmalı
+      const response = await axios.get("http://localhost:3002/movies") // API işlemleri componentDidMount içinde yapılmalı
       console.log(response);
       this.setState({movies: response.data})
     }
