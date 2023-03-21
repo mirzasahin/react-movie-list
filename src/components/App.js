@@ -13,15 +13,15 @@ class App extends React.Component{
     }
 
     async componentDidMount(){
-      const response = await axios.get(`https://api.themoviedb.org/3/movie/popular?api_key=${process.env.REACT_APP_API_KEY}&language=en-US&page=1`) // API işlemleri componentDidMount içinde yapılmalı
-      console.log(response.data.results);
-      this.setState({movies: response.data.results})
+      const response = await axios.get(`https://api.themoviedb.org/3/list/8245610?api_key=${process.env.REACT_APP_API_KEY}&language=en-US`) // API işlemleri componentDidMount içinde yapılmalı
+      console.log(response.data.items);
+      this.setState({movies: response.data.items})
     }
 
       // DELETE FUNCTION - AXIOS API
     deleteMovie = async (movie) => { 
 
-        // axios.delete(`http://localhost:3002/movies/${movie.id}`)
+        axios.post(`https://api.themoviedb.org/3/list/8245610/remove_item?media_id=${movie.id}&session_id=${process.env.REACT_APP_SESSION_ID}&api_key=${process.env.REACT_APP_API_KEY}`)
         const newMovieList = this.state.movies.filter(
             m => m.id !== movie.id
         )
@@ -37,12 +37,16 @@ class App extends React.Component{
     }
 
     render(){
-
         let filteredMovies = this.state.movies.filter(
             (movie) => {
+              if(movie.name){
+                return movie.name.toLowerCase().indexOf(this.state.searchQuery.toLowerCase()) !== -1
+              } else{
                 return movie.title.toLowerCase().indexOf(this.state.searchQuery.toLowerCase()) !== -1
+              }
             }
         )
+
         return(
             <div className='container'>
                 <div className='row'>
